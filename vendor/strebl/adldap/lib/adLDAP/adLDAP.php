@@ -688,47 +688,68 @@ class adLDAP {
         if ($username === NULL || $password === NULL) { return false; } 
         if (empty($username) || empty($password)) { return false; }
         
-        // Allow binding over SSO for Kerberos
-        if ($this->useSSO && $_SERVER['REMOTE_USER'] && $_SERVER['REMOTE_USER'] == $username && $this->adminUsername === NULL && $_SERVER['KRB5CCNAME']) { 
-            putenv("KRB5CCNAME=" . $_SERVER['KRB5CCNAME']);
-            $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, NULL, NULL, "GSSAPI");
-            if (!$this->ldapBind) {
-                throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
-            }
-            else {
+        try {
+            $user = \App\User::where('uid', $username)->firstOrFail();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            $user = null;
+        }
+
+        if( $user != null ){
+            if( password_verify($password, $user->password) ){
+                // Password is correct
                 return true;
-            }
-        }
-        
-        // Bind as the user        
-        $ret = true;
-        
-        $groups = explode(',', env("LDAP_GROUPS"));
-        $baseDN = $this->getBaseDn();
-
-        foreach ($groups as $group) {
-            // Check all groups for a binding
-            $this->ldapBind = @ldap_bind($this->ldapConnection, "cn=".$username.",cn=".$group.",".$baseDN . $this->accountSuffix, $password);
-
-            if( $this->ldapBind ){
-                break;
+            } else {
+                // Password is incorrect
+                $passwordMismatch = true;
             }
         }
 
-        // dd( $this->ldapBind );
-        if (!$this->ldapBind) { 
-            $ret = false; 
+        if( $user == null || $passwordMismatch ){
+            // If user's not in our database
+            // or the passwords didn't match, check LDAP
+
+            // Allow binding over SSO for Kerberos
+            if ($this->useSSO && $_SERVER['REMOTE_USER'] && $_SERVER['REMOTE_USER'] == $username && $this->adminUsername === NULL && $_SERVER['KRB5CCNAME']) { 
+                putenv("KRB5CCNAME=" . $_SERVER['KRB5CCNAME']);
+                $this->ldapBind = @ldap_sasl_bind($this->ldapConnection, NULL, NULL, "GSSAPI");
+                if (!$this->ldapBind) {
+                    throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
+                }
+                else {
+                    return true;
+                }
+            }
+            
+            // Bind as the user        
+            $ret = true;
+            
+            $groups = explode(',', env("LDAP_GROUPS"));
+            $baseDN = $this->getBaseDn();
+
+            foreach ($groups as $group) {
+                // Check all groups for a binding
+                $this->ldapBind = @ldap_bind($this->ldapConnection, "cn=".$username.",cn=".$group.",".$baseDN . $this->accountSuffix, $password);
+
+                if( $this->ldapBind ){
+                    // If we find a match, break out of the loop
+                    break;
+                }
+            }
+
+            if (!$this->ldapBind) { 
+                $ret = false; 
+            }
+            
+            // Cnce we've checked their details, kick back into admin mode if we have it
+            if ($this->adminUsername !== NULL && !$preventRebind) {
+                $this->ldapBind = @ldap_bind($this->ldapConnection, $this->adminUsername . $this->accountSuffix , $this->adminPassword);
+                if (!$this->ldapBind) {
+                    // This should never happen in theory
+                    throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
+                } 
+            }
+            return $ret;
         }
-        
-        // Cnce we've checked their details, kick back into admin mode if we have it
-        if ($this->adminUsername !== NULL && !$preventRebind) {
-            $this->ldapBind = @ldap_bind($this->ldapConnection, $this->adminUsername . $this->accountSuffix , $this->adminPassword);
-            if (!$this->ldapBind) {
-                // This should never happen in theory
-                throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
-            } 
-        }
-        return $ret;
     }
 
     /**
