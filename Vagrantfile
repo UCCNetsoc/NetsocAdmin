@@ -36,6 +36,7 @@ Vagrant.configure(2) do |config|
 
   	sudo apt-get update 
   	sudo apt-get install -y php5-ldap
+  	sudo service apache2 restart
 
     # Create our database and give root all permissions
     mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS #{project_name};"
