@@ -75,6 +75,7 @@ class LdapAuthUserProvider implements UserProvider
             $ldapUserInfo = $this->setInfoArray($infoCollection);
 
             if ($this->model) {
+                dd( $this->model ) ;
                 if (!is_null($model)) {
                     return $this->addLdapToModel($model, $ldapUserInfo);
                 }
@@ -130,11 +131,11 @@ class LdapAuthUserProvider implements UserProvider
             $infoCollection = new \adLDAP\collections\adLDAPUserCollection($info, $this->ad);
         } else {
             // dd( $this->ad->user());
-            $infoCollection = $this->ad->user()->infoCollection($user, ['*']);
+            $infoCollection = $this->ad->user()->info($user, ['*']);
         }
 
-        if ($infoCollection) {
-            $ldapUserInfo = $this->setInfoArray($infoCollection);
+        if ($infoCollection != null) {
+            // $ldapUserInfo = $this->setInfoArray($infoCollection);
             if ($this->model) {
                 $query = $this->createModel()->newQuery();
 
@@ -144,15 +145,26 @@ class LdapAuthUserProvider implements UserProvider
                     }
                 }
 
+                $ldapUserInfo = $this->ad->user()->info($user, ['*'])[0];
+                $userinfo = [
+                    'home_directory' => $ldapUserInfo["homedirectory"][0],
+                    'password' => str_replace('{crypt}', '', $ldapUserInfo['userpassword'][0]),
+                    'uidnumber' => $ldapUserInfo['uidnumber'][0],
+                    'uid' => $ldapUserInfo['uid'][0],
+                    'gid' => $ldapUserInfo['gidnumber'][0]
+                ];
+
                 if ($model = $query->first()) {
-                    return $this->addLdapToModel($model, $ldapUserInfo);
+                    \App\User::find( $model->id )->update( $userinfo );
+                    return $model;
                 } else {
-                    $ldapUserInfo = $this->ad->user()->info($user, ['*'])[0];
-                }
+                    // If the student is registered on LDAP but isn't 
+                    // in our database
+                    $user = \App\User::create($userinfo);
+                    return $user;
+                }                
             }
 
-
-            return new LdapUser((array) $ldapUserInfo);
         }
     }
 
