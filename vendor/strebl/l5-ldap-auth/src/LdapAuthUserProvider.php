@@ -149,7 +149,7 @@ class LdapAuthUserProvider implements UserProvider
                 $userinfo = [
                     'home_directory' => $ldapUserInfo["homedirectory"][0],
                     'password' => str_replace('{crypt}', '', $ldapUserInfo['userpassword'][0]),
-                    'uidnumber' => $ldapUserInfo['uidnumber'][0],
+                    'uid_number' => $ldapUserInfo['uidnumber'][0],
                     'uid' => $ldapUserInfo['uid'][0],
                     'gid' => $ldapUserInfo['gidnumber'][0]
                 ];
