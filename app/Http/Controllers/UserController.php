@@ -51,18 +51,40 @@ class UserController extends Controller
     public function store( ){
     	// Only allow following fields to be submitted
         $data = Request::only( [
-                    'username',
+                    'uid',
                     'password',
                     'password_confirmation',
-                    'email'
+                    'student_id'
                 ]);
 
         // Validate all input
         $validator = Validator::make( $data, [
-                    'username'  => 'required|unique:users|min:5|alpha_num',
-                    'email'     => 'email|required|unique:users',
+                    'uid'  => 'required|unique:users|min:5|alpha_num',
+                    'student_id'     => 'numeric|required|unique:users',
                     'password'  => 'required|confirmed|min:5'
                 ]);
+
+        // All usernames need to be lowercase
+        $data['uid'] = strtolower($data['uid']);
+
+        $entry['dn'] = 'cn='.$data['uid'].',cn='.env('REGISTRATION_GROUP').','.env('BASE_DN');
+        
+        $entry['gidNumber'] = '422';
+        $entry['objectClass'][] = 'account';
+        $entry['objectClass'][] = 'top';
+        $entry['objectClass'][] = 'posixAccount';
+        $entry['uidNumber'] = '3025';
+        $entry['uid'] = $data['uid'];
+
+        // Generate an alphanumeric salt for the password
+        $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
+        $entry['userPassword'] = $data['password'] = '{crypt}'.crypt($data['password'], $salt );
+
+
+        $entry['homeDirectory'] = '/home/users/'.$data['uid'];
+        $entry['loginShell'] = '/bin/bash';
+        $entry['cn'] = $data['uid'];
+        
 
         if( $validator->fails( ) ){
         	// If validation fails, redirect back to 
@@ -72,11 +94,19 @@ class UserController extends Controller
                     ->withInput( );
         }
 
-        // Hash the password
-        $data['password'] = Hash::make($data['password']);
+        // Create new user in LDAP
+        $adLDAP = new adLDAP( );
+        $ldapUsers = new adLDAPUsers( $adLDAP );
+        $ldapUsers->create( $entry );
 
-        // Create the new user
-        $newUser = User::create( $data );
+        // Create new user locally
+        $newUser = User::create($data);
+
+        // Get missing defaults from LDAP
+        Auth::attempt(['uid' => $data['uid'], 'password' => $data['password']]);
+
+        // login user
+        Auth::login($newUser);
 
         if( $newUser ){
         	// If successful, go to home

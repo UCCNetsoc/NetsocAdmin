@@ -74,47 +74,20 @@ class adLDAPUsers {
     * @return bool
     */
     public function create($attributes) {
+
         // Check for compulsory fields
-        if (!array_key_exists("username", $attributes)) { return "Missing compulsory field [username]"; }
-        if (!array_key_exists("firstname", $attributes)) { return "Missing compulsory field [firstname]"; }
-        if (!array_key_exists("surname", $attributes)) { return "Missing compulsory field [surname]"; }
-        if (!array_key_exists("email", $attributes)) { return "Missing compulsory field [email]"; }
-        if (!array_key_exists("container", $attributes)) { return "Missing compulsory field [container]"; }
-        if (!is_array($attributes["container"])) { return "Container attribute must be an array."; }
+        if (!array_key_exists("uid", $attributes)) { return "Missing compulsory field [uid]"; }
 
-        if (array_key_exists("password",$attributes) && (!$this->adldap->getUseSSL() && !$this->adldap->getUseTLS())) { 
-            throw new \adLDAP\adLDAPException('SSL must be configured on your webserver and enabled in the class to set passwords.');
-        }
 
-        if (!array_key_exists("display_name", $attributes)) { 
-            $attributes["display_name"] = $attributes["firstname"] . " " . $attributes["surname"]; 
-        }
-
-        // Translate the schema
-        $add = $this->adldap->adldap_schema($attributes);
-        
-        // Additional stuff only used for adding accounts
-        $add["cn"][0] = $attributes["display_name"];
-        $add["samaccountname"][0] = $attributes["username"];
-        $add["objectclass"][0] = "top";
-        $add["objectclass"][1] = "person";
-        $add["objectclass"][2] = "organizationalPerson";
-        $add["objectclass"][3] = "user"; //person?
-        //$add["name"][0]=$attributes["firstname"]." ".$attributes["surname"];
-
-        // Set the account control attribute
-        $control_options = array("NORMAL_ACCOUNT");
-        if (!$attributes["enabled"]) { 
-            $control_options[] = "ACCOUNTDISABLE"; 
-        }
-        $add["userAccountControl"][0] = $this->accountControl($control_options);
-        
-        // Determine the container
-        $attributes["container"] = array_reverse($attributes["container"]);
-        $container = "OU=" . implode(", OU=",$attributes["container"]);
-
+        // dd( $attributes );
         // Add the entry
-        $result = @ldap_add($this->adldap->getLdapConnection(), "CN=" . $add["cn"][0] . ", " . $container . "," . $this->adldap->getBaseDn(), $add);
+        $ds = ldap_connect('ldap://'.env('LDAP_DOMAIN'));
+        ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+        $result = ldap_bind($ds, env('LDAP_USERNAME'), env('LDAP_PASSWORD'));
+        $dn = $attributes['dn'];
+        unset($attributes['dn']);
+
+        $result = ldap_add($ds, $dn, $attributes);
         if ($result != true) { 
             return false; 
         }

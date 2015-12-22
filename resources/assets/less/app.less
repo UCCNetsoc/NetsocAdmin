@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,300|Roboto+Slab);
+
 .brand-logo{
 	figure{
 		padding: 0;
@@ -20,4 +22,32 @@
 	overflow: hidden;
 	clip: rect(0,0,0,0);
 	border: 0;
+}
+
+html{
+  	height: 100%;
+  	font-family: 'Roboto', sans-serif;
+  	font-weight: 300;
+
+	body {
+		min-height: 100%;
+
+		&.register, &.login{
+			.form-logo{
+				width: 100%;
+				padding: 20px 10px 0px;
+
+				& + h3{
+					padding: 0px;
+					margin: 0px;
+				}
+			}
+		}
+	}
+
+	h1,h2,h3,h4,h5{
+		font-family: 'Roboto Slab', serif;
+	}
+
+
 }

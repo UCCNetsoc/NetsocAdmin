@@ -24,38 +24,4 @@
 
 	@yield('extra-head')
 </head>
-<body>
-    
-    <header>
-    	<nav>
-			<div class="nav-wrapper container">
-			  <a href="{{ URL::to('/home') }}" class="brand-logo">
-			  	<figure>
-					<img src="images/logo.png" alt="{{ env( 'SITE_TITLE' ) }}" class="logo">
-					<figcaption class="sr-only">
-						<h1> {{ env( 'SITE_TITLE' ) }}</h1>
-					</figcaption>
-				</figure>
-			  </a>
-			  <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-			  <ul class="right hide-on-med-and-down">
-			  	@if( Auth::check( ) )
-			  		<li><a href="{{ URL::to( 'home' ) }}">Home</a></li>
-			  	@else 
-					<li class="login"><a class="waves-effect waves-light modal-trigger" href="#login-modal">Login</a></li>
-					<li><a href="{{ URL::route('register') }}">Register</a></li>
-			  	@endif
-			  </ul>
-			  <ul class="side-nav" id="mobile-demo">
-
-			  	@if( Auth::check( ) )
-			  		<li><a href="{{ URL::to( 'home' ) }}">Home</a></li>
-			  	@else 
-					<li class="login"><a class="waves-effect waves-light modal-trigger" href="#login-modal">Login</a></li>
-					<li><a href="{{ URL::route('register') }}">Register</a></li>
-			  	@endif
-			 
-			  </ul>
-			</div>
-		</nav>
-	</header>
+<body class="@yield('body-class')">

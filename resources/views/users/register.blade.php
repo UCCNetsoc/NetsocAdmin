@@ -1,9 +1,13 @@
 @extends('layouts.default')
 
+@section('body-class') valign-wrapper register @endsection
+
 @section('content')
 
 <main class="row container">
-	<section class="card-panel white col m6 offset-m3">
+	<section class="card-panel white col l6 offset-l3 s12 valign	">
+		<img src="images/logo.png" class="form-logo"/>
+
 		<h3 class="center-align"> Register </h3>
 		@foreach ($errors->all() as $message)
 	        <li>{{ $message }}</li>
@@ -16,14 +20,14 @@
 		]) !!}
 		<div class="row">
 			<div class="input-field">
-				{!! Form::label('email', 'Email') !!}
-				{!! Form::email('email', null, ["class" => "example"] ) !!}
+				{!! Form::label('student_id', 'Student Number') !!}
+				{!! Form::text('student_id', null, ["class" => "example"] ) !!}
 			</div>
 		</div>
 		<div class="row">
 			<div class="input-field">
-				{!! Form::label('username', 'Username') !!}
-				{!! Form::text('username', null, ["class" => "example"] ) !!}
+				{!! Form::label('uid', 'Username (lowercase-only)') !!}
+				{!! Form::text('uid', null, ["class" => "example"] ) !!}
 			</div>
 		</div>
 		
