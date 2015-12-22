@@ -75,7 +75,6 @@ class LdapAuthUserProvider implements UserProvider
             $ldapUserInfo = $this->setInfoArray($infoCollection);
 
             if ($this->model) {
-                dd( $this->model ) ;
                 if (!is_null($model)) {
                     return $this->addLdapToModel($model, $ldapUserInfo);
                 }
@@ -116,7 +115,6 @@ class LdapAuthUserProvider implements UserProvider
      */
     public function retrieveByCredentials(array $credentials)
     {
-        // dd( $credentials );
         if (!$user = $credentials[$this->getUsernameField()]) {
             throw new \InvalidArgumentException();
         }
@@ -130,7 +128,6 @@ class LdapAuthUserProvider implements UserProvider
 
             $infoCollection = new \adLDAP\collections\adLDAPUserCollection($info, $this->ad);
         } else {
-            // dd( $this->ad->user());
             $infoCollection = $this->ad->user()->info($user, ['*']);
         }
 

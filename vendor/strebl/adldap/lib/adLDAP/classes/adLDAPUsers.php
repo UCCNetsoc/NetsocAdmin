@@ -79,7 +79,6 @@ class adLDAPUsers {
         if (!array_key_exists("uid", $attributes)) { return "Missing compulsory field [uid]"; }
 
 
-        // dd( $attributes );
         // Add the entry
         $ds = ldap_connect('ldap://'.env('LDAP_DOMAIN'));
         ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
