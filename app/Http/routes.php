@@ -11,8 +11,7 @@
 |
 */
 
-Route::get('/', 'UserController@index');
-Route::get('home', ['as' => 'register', 'uses' => 'UserController@index']);
+Route::get('/', ['as' => 'home', 'uses' => 'UserController@index']);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
@@ -23,4 +22,4 @@ Route::get('/register', ['as' => 'register', 'uses' => 'UserController@register'
 Route::post('/user/store', ['as' => 'user/store', 'uses' => 'UserController@store']);
 
 Route::get('/login', ['as' => 'login', 'uses' => 'UserController@login']);
-Route::post('/user/login', ['as' => 'handleLogin', 'uses' => 'UserController@handleLogin']);
+Route::post('/user/login', ['as' => 'user/login', 'uses' => 'UserController@handleLogin']);

@@ -8,6 +8,8 @@ use Request;
 use Validator;
 use Hash;
 use App\User;
+use adLDAP\classes\adLDAPUsers;
+use adLDAP\adLDAP;
 
 class UserController extends Controller
 {
@@ -25,12 +27,10 @@ class UserController extends Controller
 	 * @return VIEW welcome
 	 */
 	public function index( ){
-        if (Auth::attempt(['uid' => "username", 'password' => "password"])) {
-            // Authentication passed...
-            echo "logged in";
-            die();
+        if( Auth::check() ){
+            echo "Logged in";
         } else {
-            echo "Nada";
+            return Redirect::route('register');
         }
 		// return View::make( 'welcome' );
 	}
@@ -142,13 +142,13 @@ class UserController extends Controller
      */
     public function handleLogin( ){
     	// Filter allowed data
-        $data = Request::only([ 'email', 'password' ]);
+        $data = Request::only([ 'uid', 'password' ]);
 
         // Validate user input
         $validator = Validator::make(
             $data,
             [
-                'email' => 'required|email|min:8',
+                'uid' => 'required',
                 'password' => 'required',
             ]
         );
@@ -158,7 +158,7 @@ class UserController extends Controller
             return Redirect::route('login')->withErrors( $validator )->withInput( );
         }
 
-        if( Auth::attempt( [ 'email' => $data['email'], 'password' => $data['password']], true ) ){
+        if( Auth::attempt( [ 'uid' => $data['uid'], 'password' => $data['password']], true ) ){
         	// If login is successful, send them to home
             return Redirect::route( 'home' );
         } else {
