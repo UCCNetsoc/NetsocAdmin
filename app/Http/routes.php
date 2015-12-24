@@ -23,3 +23,15 @@ Route::post('/user/store', ['as' => 'user/store', 'uses' => 'UserController@stor
 
 Route::get('/login', ['as' => 'login', 'uses' => 'UserController@login']);
 Route::post('/user/login', ['as' => 'user/login', 'uses' => 'UserController@handleLogin']);
+
+Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
+	Route::group(['prefix' => 'mysql'], function () {
+	    Route::get('/', ['as' => 'manage/mysql', 'uses' => 'MySQLController@index' ] );
+	    Route::post('add', ['as' => 'manage/mysql/add', 'uses' => 'MySQLController@create' ] );
+	    Route::post('delete', ['as' => 'manage/mysql/delete', 'uses' => 'MySQLController@delete' ] );
+	});
+});
+
+Route::group(['prefix' => 'api'], function( ){
+	Route::post('revealPassword', ['uses' => 'APIController@revealPassword']);
+});

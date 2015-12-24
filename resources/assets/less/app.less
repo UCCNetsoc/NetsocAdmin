@@ -1,4 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400,300|Roboto+Slab);
+@import url(https://fonts.googleapis.com/css?family=Roboto:600,400,300|Roboto+Slab);
+
+/* COLOURS */
+@offblack: #111;
+@offwhite: #fffff8;
+
+	/* Brand Colours */
+	@wordpress-blue: #21759b;
+
+/* FONTS */
+@heading-stack: 	'Roboto Slab', serif;
+@fontstack: 		'Roboto', sans-serif;
+
 
 .brand-logo{
 	figure{
@@ -26,13 +38,13 @@
 
 html{
   	height: 100%;
-  	font-family: 'Roboto', sans-serif;
+  	font-family: @fontstack;
   	font-weight: 300;
 
 	body {
 		min-height: 100%;
-		background: #fffff8;
-		color: #111;
+		background: @offwhite;
+		color: @offblack;
 
 		&.register, &.login{
 			.form-logo{
@@ -45,11 +57,74 @@ html{
 				}
 			}
 		}
+
+		.with-sidebar{
+			.logo img{
+				width: 100%;
+				margin-top: 20px;
+			}
+			
+			a .card{
+				color: @offblack;
+				padding: 0;
+
+				.card-title{
+					font-family: @heading-stack;
+				}
+				
+				.card-image{
+					padding: 20px 20px;
+					i.fa-inverse{
+						color: @offwhite;
+					}
+
+					img{
+						width: 100%;
+					    max-width: 121px;
+					}
+				}
+			}
+
+			.card-horizontal{
+				.card-image {
+					float: left;
+					width: 50%;
+					height: 100%;
+
+				}
+				.card-content {
+					float: left;
+					width: 50%;
+				}
+				.card-action {
+					width: 100%;
+					left: inherit;
+					padding: 10px 20px;
+				}
+			}
+		}
+
+		aside{
+			#nav-mobile{
+				.active a{
+					font-size: 1.2rem;
+				}
+			}
+		}
 	}
 
 	h1,h2,h3,h4,h5{
-		font-family: 'Roboto Slab', serif;
+		font-family: @heading-stack;
+	}
+	
+	.wordpress{
+		background: @wordpress-blue;
 	}
 
-
+	.button-collapse.top-nav.full.hide-on-large-only i{
+		font-size: 4em;
+		color: @offblack;
+		float: right;
+	}
 }
+
