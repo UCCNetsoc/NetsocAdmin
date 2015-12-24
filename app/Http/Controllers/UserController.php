@@ -63,27 +63,6 @@ class UserController extends Controller
                     'student_id'     => 'numeric|required|unique:users',
                     'password'  => 'required|confirmed|min:5'
                 ]);
-
-        // All usernames need to be lowercase
-        $data['uid'] = strtolower($data['uid']);
-
-        $entry['dn'] = 'cn='.$data['uid'].',cn='.env('REGISTRATION_GROUP').','.env('BASE_DN');
-        
-        $entry['gidNumber'] = '422';
-        $entry['objectClass'][] = 'account';
-        $entry['objectClass'][] = 'top';
-        $entry['objectClass'][] = 'posixAccount';
-        $entry['uidNumber'] = '3025';
-        $entry['uid'] = $data['uid'];
-
-        // Generate an alphanumeric salt for the password
-        $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
-        $entry['userPassword'] = $data['password'] = '{crypt}'.crypt($data['password'], $salt );
-
-
-        $entry['homeDirectory'] = '/home/users/'.$data['uid'];
-        $entry['loginShell'] = '/bin/bash';
-        $entry['cn'] = $data['uid'];
         
 
         if( $validator->fails( ) ){
@@ -93,6 +72,33 @@ class UserController extends Controller
                     ->withErrors( $validator )
                     ->withInput( );
         }
+
+        // All usernames need to be lowercase
+        $data['uid'] = strtolower($data['uid']);
+
+        $settings = $this->getLDAPDefaults( );
+        $entry['objectClass'][] = 'account';
+        $entry['objectClass'][] = 'top';
+        $entry['objectClass'][] = 'posixAccount';
+        $entry['dn'] = 'cn='.$data['uid'].',cn='.$settings['registration_group'].','.$settings['base_dn'];
+        $entry['gidNumber'] = $settings['registration_group_id'];
+        $entry['uid'] = $data['uid'];
+
+        // Get UID number, use it then increment it
+        $current_uid_number = Setting::where('name', 'current_uid_number');
+        $entry['uidNumber'] = $current_uid_number->setting;
+        $current_uid_number->setting++;
+        $current_uid_number->save();
+
+
+        // Generate an alphanumeric salt for the password
+        $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
+        $entry['userPassword'] = $data['password'] = '{crypt}'.crypt($data['password'], $salt );
+
+
+        $entry['homeDirectory'] = $settings['default_home_directory'].$data['uid'];
+        $entry['loginShell'] = $settings['default_shell'];
+        $entry['cn'] = $data['uid'];
 
         // Create new user in LDAP
         $adLDAP = new adLDAP( );
@@ -170,5 +176,23 @@ class UserController extends Controller
         }
 
         return Redirect::route( 'login' )->withInput( );
+    }
+
+
+    private function getLDAPDefaults( ){
+        $setting_ids = [
+            'registration_group',
+            'registration_group_id',
+            'default_home_directory',
+            'default_shell'
+        ];
+
+        $settings = [];
+
+        foreach ($setting_ids as $id) {
+            $settings['id'] = Setting::where('name', $id)->first()->setting;
+        }
+
+        return $settings;
     }
 }
