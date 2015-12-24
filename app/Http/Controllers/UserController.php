@@ -28,9 +28,9 @@ class UserController extends Controller
 	 */
 	public function index( ){
         if( Auth::check() ){
-            echo "Logged in";
+            return View::make('admin.index');
         } else {
-            return Redirect::route('register');
+            return Redirect::route('login');
         }
 		// return View::make( 'welcome' );
 	}
@@ -40,7 +40,7 @@ class UserController extends Controller
 	 * @return VIEW register
 	 */
     public function register( ){
-        return View::make( 'users.register' );
+        return View::make( 'auth.register' );
     }
 
     /**
@@ -133,7 +133,7 @@ class UserController extends Controller
             return Redirect::route( 'home' );
         }
 
-        return View::make( 'users.login' );
+        return View::make( 'auth.login' );
     }
 
     /**
