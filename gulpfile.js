@@ -21,7 +21,7 @@ require('laravel-elixir-browser-sync');
 elixir(function(mix) {
 	mix.browserSync([
 	    'public/**/*',
-	    'resources/views/**/*'
+	    'resources/**/*'
 		], {
 		proxy: 'netsocadmin.dev',
 		reloadDelay: 500
