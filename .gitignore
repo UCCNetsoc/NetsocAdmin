@@ -9,3 +9,4 @@
 composer.lock
 public/css/app*
 public/js/app*
+.bundle/*
