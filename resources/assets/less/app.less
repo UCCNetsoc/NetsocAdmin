@@ -3,6 +3,8 @@
 /* COLOURS */
 @offblack: #111;
 @offwhite: #fffff8;
+@red-lighten-1: #ef5350;
+@teal: #009688;
 
 	/* Brand Colours */
 	@wordpress-blue: #21759b;
@@ -58,6 +60,17 @@ html{
 			}
 		}
 
+		&.account-update{
+			.collapsible-header.active{
+				background: @teal;
+				color: white;
+			}
+			.collapsible-body{
+				padding: 20px;
+				background: white;
+			}
+		}
+
 		.with-sidebar{
 			.logo img{
 				width: 100%;
@@ -102,6 +115,7 @@ html{
 					padding: 10px 20px;
 				}
 			}
+
 		}
 
 		aside{
