@@ -1,5 +1,5 @@
 <section class="card-panel white col l6 offset-l3 s12 valign	">
-	<img src="images/logo.png" class="form-logo"/>
+	<img src="{{ URL::to('/') }}/images/logo.png" class="form-logo"/>
 
 	<h3 class="center-align"> Login </h3>
 	@foreach ($errors->all() as $message)
