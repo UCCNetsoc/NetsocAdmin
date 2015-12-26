@@ -94,13 +94,16 @@ class MySQLController extends Controller
 	 * Create a new MySQL Database
 	 * @param  string $db_name Name of the database
 	 */
-	public function createDatabase( $db_name ){
-		// Prepend the database name with {username}_
-		$db_name = Auth::user()->uid . "_" . $db_name;
+	public static function createDatabase( $db_name ){
+
+		if( substr($db_name, 0, strlen(Auth::user()->uid . "_")) != Auth::user()->uid . "_" ){
+			// Prepend the database name with {username}_
+			$db_name = Auth::user()->uid . "_" . $db_name;
+		}
 
 		// Unfortunately, can't use placeholders for system statements
         $db_name = str_replace('`', '', $db_name);
-        DB::statement("CREATE DATABASE `{$db_name}`;");
+        DB::statement("CREATE DATABASE IF NOT EXISTS `{$db_name}`;");
         MySQLDatabase::create(['user_id' => Auth::user()->id, 'db_name' => $db_name]);
 	}
 
@@ -114,8 +117,10 @@ class MySQLController extends Controller
 
 		// Create user and grant permissions on all DBs
 		// beginning with {username}_
-        DB::statement("CREATE USER '{$username}'@'%' IDENTIFIED BY '{$password}';");
-        DB::statement("GRANT ALL PRIVILEGES ON `{$username}\_%`.* TO '{$username}'@'%';");
+		DB::statement("CREATE USER '{$username}'@'%' IDENTIFIED BY '{$password}'");
+		DB::statement("CREATE USER '{$username}'@'localhost' IDENTIFIED BY '{$password}'");
+        DB::statement("GRANT ALL PRIVILEGES ON `{$username}\_%`.* TO '{$username}'@'%' IDENTIFIED BY '{$password}';");
+        DB::statement("GRANT ALL PRIVILEGES ON `{$username}\_%`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$password}';");
 
         MySQLUser::create(['user_id' => Auth::user()->id, 'username' => Auth::user()->uid, 'password' => $password]);
 
@@ -123,9 +128,20 @@ class MySQLController extends Controller
 	}
 
 	/**
+	 * Create a user solely for one database only
+	 */
+	public static function createSoleUser( $username, $password, $dbname ){
+		// Create user and grant permissions on specified DBs
+		DB::statement("CREATE USER '{$username}'@'%' IDENTIFIED BY '{$password}'");
+		DB::statement("CREATE USER '{$username}'@'localhost' IDENTIFIED BY '{$password}'");
+        DB::statement("GRANT ALL ON `{$dbname}`.* TO '{$username}'@'%' IDENTIFIED BY '{$password}';");
+        DB::statement("GRANT ALL ON `{$dbname}`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$password}';");
+	}
+
+	/**
 	 * Generate a random alphanumeric password
 	 */
-	public function randomPassword() {
+	public static function randomPassword() {
 	    $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
 	    $pass = array(); //remember to declare $pass as an array
 	    $alphaLength = strlen($alphabet) - 1;

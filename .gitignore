@@ -9,6 +9,8 @@
 composer.lock
 public/css/app*
 public/js/app*
+public/js/wordpress*
 public/cache/*
 public/wordpress/*
 .bundle/*
+*.map

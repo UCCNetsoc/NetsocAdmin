@@ -36,6 +36,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
 		Route::get('/', ['as' => 'manage/account', 'uses' => 'UserController@changeDetails']);
 		Route::post('/update', ['as' => 'manage/account/update', 'uses' => 'UserController@update']);
 	});
+
+	Route::group(['prefix' => 'wordpress'], function(){
+		Route::match(['get', 'post'], '/', ['as' => 'manage/wordpress', 'uses' => 'Software\Wordpress@install']);
+		// Route::post('/update', ['as' => 'manage/account/update', 'uses' => 'UserController@update']);
+	});
 });
 
 Route::group(['prefix' => 'api'], function( ){
