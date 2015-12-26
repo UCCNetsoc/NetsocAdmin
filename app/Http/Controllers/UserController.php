@@ -8,6 +8,7 @@ use Request;
 use Validator;
 use Hash;
 use App\User;
+use App\Setting;
 use adLDAP\classes\adLDAPUsers;
 use adLDAP\adLDAP;
 
@@ -22,6 +23,13 @@ class UserController extends Controller
 | 
 |
 */
+    
+    /*
+    |------------------
+    | VIEWS
+    |------------------
+    */
+
 	/**
 	 * Render front page view
 	 * @return VIEW welcome
@@ -43,6 +51,36 @@ class UserController extends Controller
         return View::make( 'auth.register' );
     }
 
+    /**
+     * Render login view
+     * @return VIEW login
+     */
+    public function login( ){
+
+        if( Auth::check( ) ){
+            // If user is logged in, send 'em home
+            return Redirect::route( 'home' );
+        }
+
+        return View::make( 'auth.login' );
+    }
+
+    public function logout( ){
+        Auth::logout();
+        return Redirect::route('login');
+    }
+
+    public function changeDetails( ){
+        $userInfo = Auth::user()->toArray();
+        return View::make( 'admin.account.index' )->with('info', $userInfo);
+    }
+
+    /*
+    |------------------
+    | FORM CONTROLS
+    |------------------
+    */
+   
     /**
      * Creates a new user
      * 	Data should be POSTed to this function only
@@ -80,7 +118,7 @@ class UserController extends Controller
         $entry['objectClass'][] = 'account';
         $entry['objectClass'][] = 'top';
         $entry['objectClass'][] = 'posixAccount';
-        $entry['dn'] = 'cn='.$data['uid'].',cn='.$settings['registration_group'].','.$settings['base_dn'];
+        $entry['dn'] = 'cn='.$data['uid'].',cn='.$settings['registration_group'].','.env('BASE_DN');
         $entry['gidNumber'] = $settings['registration_group_id'];
         $entry['uid'] = $data['uid'];
 
@@ -90,10 +128,7 @@ class UserController extends Controller
         $current_uid_number->setting++;
         $current_uid_number->save();
 
-
-        // Generate an alphanumeric salt for the password
-        $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
-        $entry['userPassword'] = $data['password'] = '{crypt}'.crypt($data['password'], $salt );
+        $entry['userPassword'] = $data['password'] = $this->generateLDAPPassword( $data['password'] );
 
 
         $entry['homeDirectory'] = $settings['default_home_directory'].$data['uid'];
@@ -126,20 +161,6 @@ class UserController extends Controller
                     ] )
                     ->withInput( );
 
-    }
-
-    /**
-     * Render login view
-     * @return VIEW login
-     */
-    public function login( ){
-
-        if( Auth::check( ) ){
-        	// If user is logged in, send 'em home
-            return Redirect::route( 'home' );
-        }
-
-        return View::make( 'auth.login' );
     }
 
     /**
@@ -178,6 +199,54 @@ class UserController extends Controller
         return Redirect::route( 'login' )->withInput( );
     }
 
+    public function update( ){
+        $user_params = [
+            'name',
+            'course',
+            'graduation_year',
+            'password'
+        ];
+
+        $data = Request::only($user_params);
+
+        if( $data['password'] == '' ){
+            unset( $data['password'] );
+        }
+
+        // Validate user input
+        $validator = Validator::make(
+            $data,
+            [
+                'name' => 'max:255|min:1',
+                'course' => 'max:255|min:1',
+                'graduation_year' => 'numeric|digits:4',
+                'password' => 'sometimes|min:5'
+            ]
+        );
+
+        if($validator->fails()){
+            // If validation fails, send back with errors
+            return Redirect::back()->withErrors( $validator )->withInput( );
+        }
+
+        if( isset( $data['password'] ) ){
+            $this->changePassword( $data['password'] );
+        }
+
+        $user = Auth::user();
+        foreach ($user_params as $param) {
+            isset($data[$param]) ? $user->$param = $data[$param] : '';
+        }
+        $user->save();
+
+        return Redirect::back()->withErrors( ['message' => 'Updated successfully!'] );
+    }
+
+    /*
+    |------------------
+    | GENERAL FUNCTIONS
+    |------------------
+    */
 
     private function getLDAPDefaults( ){
         $setting_ids = [
@@ -190,9 +259,30 @@ class UserController extends Controller
         $settings = [];
 
         foreach ($setting_ids as $id) {
-            $settings['id'] = Setting::where('name', $id)->first()->setting;
+            $settings[$id] = Setting::where('name', $id)->first()->setting;
         }
 
         return $settings;
+    }
+
+    private function generateLDAPPassword( $password_string ){
+        // Generate an alphanumeric salt for the password
+        $salt = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',4)),0,4);
+        return '{crypt}'.crypt($password_string, $salt );
+    }
+
+    private function changePassword( $new_password ){
+        $password = $this->generateLDAPPassword( $new_password );
+        $settings = $this->getLDAPDefaults( );
+        $dn = 'cn='.Auth::user()->uid.',cn='.$settings['registration_group'].','.env('BASE_DN');
+
+        $entry = array();
+        $entry['dn'] = $dn;
+        $entry['userPassword'] = $password;
+
+        // Create new user in LDAP
+        $adLDAP = new adLDAP( );
+        $ldapUsers = new adLDAPUsers( $adLDAP );
+        $ldapUsers->modify( Auth::user()->uid, $entry );
     }
 }

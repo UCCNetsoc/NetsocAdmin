@@ -25,7 +25,7 @@
 		
 		{{-- Domains --}}
 		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
-			<div class="card hoverable card-horizontal valign-wrapper">
+			<div class="card hoverable card-horizontal valign-wrapper disabled">
 				<div class="card-image center-align red lighten-1">
 					<span class="fa-stack fa-4x">
 						<i class="fa fa-globe fa-stack-2x"></i>
@@ -43,7 +43,7 @@
 		</a>
 		
 		{{-- Account --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/account') }}" class="col l4">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align orange lighten-2">
 					<img src="https://robohash.org/{{ Auth::user()->uid }}" />
@@ -108,7 +108,7 @@
 					</span>
 				</div>
 				<div class="card-content">
-					<div class="card-title center-align valign">Account</div>
+					<div class="card-title center-align valign">Backups</div>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>
@@ -122,33 +122,15 @@
 		{{-- Wordpress --}}
 		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
 			<div class="card hoverable card-horizontal valign-wrapper">
-				<div class="card-image center-align wordpress">
-					<span class="fa-stack fa-4x">
-						<i class="fa fa-wordpress fa-stack-2x white-text"></i>
-					</span>
-				</div>
-				<div class="card-content">
-					<div class="card-title center-align valign">Wordpress</div>
-				</div>
-				{{-- <div class="card-action">
-					<a href="#"><i class="mdi-social-share"></i></a>
-					<a href="#"><i class="mdi-action-favorite-outline"></i></a>
-				</div> --}}
-			</div>
-		</a>
-		
-		
-		{{-- Domains --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
-			<div class="card hoverable card-horizontal valign-wrapper">
-				<div class="card-image center-align blue lighten-2">
+				<div class="card-image center-align amber">
 					<span class="fa-stack fa-4x">
 						<i class="fa fa-square fa-stack-2x"></i>
-						<i class="fa fa-code fa-stack-1x fa-inverse"></i>
+						<i class="fa fa-terminal fa-stack-1x fa-inverse"></i>
+					</span>
 					</span>
 				</div>
 				<div class="card-content">
-					<div class="card-title center-align valign">Domains</div>
+					<div class="card-title center-align valign">How To SSH</div>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>
@@ -157,17 +139,18 @@
 			</div>
 		</a>
 		
-		{{-- Account --}}
+		
 		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
 			<div class="card hoverable card-horizontal valign-wrapper">
-				<div class="card-image center-align light-green lighten-1">
+				<div class="card-image center-align  lime">
 					<span class="fa-stack fa-4x">
-						<i class="fa fa-circle fa-stack-2x fa-inverse"></i>
-						<i class="fa fa-fire-extinguisher fa-stack-1x "></i>
+						<i class="fa fa-desktop fa-stack-2x"></i>
+						<i class="fa fa-comments fa-stack-1x fa-1x fa-inverse"></i>
+					</span>
 					</span>
 				</div>
 				<div class="card-content">
-					<div class="card-title center-align valign">Account</div>
+					<div class="card-title center-align valign">How To SSH</div>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>
@@ -175,5 +158,6 @@
 				</div> --}}
 			</div>
 		</a>
+
 	</div>
 @endsection

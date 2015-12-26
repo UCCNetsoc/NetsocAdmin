@@ -334,38 +334,14 @@ class adLDAPUsers {
     * @return bool
     */
     public function modify($username, $attributes, $isGUID = false) {
-        if ($username === NULL) { return "Missing compulsory field [username]"; }
-        if (array_key_exists("password", $attributes) && !$this->adldap->getUseSSL() && !$this->adldap->getUseTLS()) { 
-            throw new \adLDAP\adLDAPException('SSL/TLS must be configured on your webserver and enabled in the class to set passwords.');
-        }
-
-        // Find the dn of the user
-        $userDn = $this->dn($username, $isGUID);
-        if ($userDn === false) { 
-            return false; 
-        }
-        
-        // Translate the update to the LDAP schema                
-        $mod = $this->adldap->adldap_schema($attributes);
-        
-        // Check to see if this is an enabled status update
-        if (!$mod && !array_key_exists("enabled", $attributes)) { 
-            return false; 
-        }
-        
-        // Set the account control attribute (only if specified)
-        if (array_key_exists("enabled", $attributes)) {
-            if ($attributes["enabled"]) { 
-                $controlOptions = array("NORMAL_ACCOUNT"); 
-            }
-            else { 
-                $controlOptions = array("NORMAL_ACCOUNT", "ACCOUNTDISABLE"); 
-            }
-            $mod["userAccountControl"][0] = $this->accountControl($controlOptions);
-        }
+        $dn = $attributes['dn'];
+        unset( $attributes['dn'] );
 
         // Do the update
-        $result = @ldap_modify($this->adldap->getLdapConnection(), $userDn, $mod);
+        $ds = ldap_connect('ldap://'.env('LDAP_DOMAIN'));
+        ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+        $result = ldap_bind($ds, env('LDAP_USERNAME'), env('LDAP_PASSWORD'));
+        $result = ldap_modify($ds, $dn, $attributes);
         if ($result == false) { 
             return false; 
         }

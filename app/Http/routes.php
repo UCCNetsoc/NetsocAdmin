@@ -23,12 +23,18 @@ Route::post('/user/store', ['as' => 'user/store', 'uses' => 'UserController@stor
 
 Route::get('/login', ['as' => 'login', 'uses' => 'UserController@login']);
 Route::post('/user/login', ['as' => 'user/login', 'uses' => 'UserController@handleLogin']);
+Route::get('/logout', ['as' => 'logout', 'uses' => 'UserController@logout']);
 
 Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
 	Route::group(['prefix' => 'mysql'], function () {
 	    Route::get('/', ['as' => 'manage/mysql', 'uses' => 'MySQLController@index' ] );
 	    Route::post('add', ['as' => 'manage/mysql/add', 'uses' => 'MySQLController@create' ] );
 	    Route::post('delete', ['as' => 'manage/mysql/delete', 'uses' => 'MySQLController@delete' ] );
+	});
+
+	Route::group(['prefix' => 'account'], function(){
+		Route::get('/', ['as' => 'manage/account', 'uses' => 'UserController@changeDetails']);
+		Route::post('/update', ['as' => 'manage/account/update', 'uses' => 'UserController@update']);
 	});
 });
 
