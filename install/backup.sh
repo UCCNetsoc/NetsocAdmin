@@ -13,6 +13,11 @@ for i in $BASE/*/ ; do
     username=$(basename "$i")
     backup_location="$STORAGE_PATH/$username/$TIMEFRAME"
     manifest_file="$backup_location/manifest.txt"
+
+    if [ ! -f $manifest_file ]; then
+        echo "0000-00-00\n0000-00-00\n0000-00-00\n0000-00-00" > $manifest_file
+    fi
+
     OLD=$(head -1 $manifest_file) # Read first line
 
     # Put a backup in the relevant folder
