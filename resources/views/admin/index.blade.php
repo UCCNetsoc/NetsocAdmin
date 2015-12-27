@@ -141,7 +141,7 @@
 		</a>
 		
 		
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
+		<a href="{{ URL::route('static/irc') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align  lime">
 					<span class="fa-stack fa-4x">
@@ -152,7 +152,6 @@
 				</div>
 				<div class="card-content">
 					<div class="card-title center-align valign">How To IRC</div>
-					<small class="center-align col s12">(Coming Soon)</small>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>

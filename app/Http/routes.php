@@ -51,6 +51,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
 
 Route::group(['middleware' => 'auth', 'prefix' => 'static'], function () {
     Route::get('/ssh', ['as' => 'static/ssh', 'uses' => 'StaticController@howToSSH' ] );
+    Route::get('/irc', ['as' => 'static/irc', 'uses' => 'StaticController@howToIRC' ] );
 });
 
 

@@ -18,4 +18,7 @@ class StaticController extends Controller{
 	public function howToSSH( ){
 		return View::make('static.ssh');
 	}
+	public function howToIRC( ){
+		return View::make('static.irc');
+	}
 }
