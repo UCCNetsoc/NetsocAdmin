@@ -18,14 +18,14 @@ class FileController extends Controller{
 	/**
 	 * Recursively delete a directory and its contents
 	 */
-	private static function rrmdir($path) {
+	public static function rrmdir($path) {
 	    return is_file($path) ? @unlink($path): array_map( array($this, 'rrmdir'), glob($path.'/*'))==@rmdir($path);
 	}
 
 	/**
 	 * Recursively copy all the files from source folder to destination
 	 */
-	private static function recursive_copy($src, $dst) { 
+	public static function recursive_copy($src, $dst) { 
 	    $dir = opendir($src); 
 	    @mkdir($dst); 
 	    while(false !== ( $file = readdir($dir)) ) { 
