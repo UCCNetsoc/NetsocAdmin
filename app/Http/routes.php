@@ -39,7 +39,13 @@ Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
 
 	Route::group(['prefix' => 'wordpress'], function(){
 		Route::match(['get', 'post'], '/', ['as' => 'manage/wordpress', 'uses' => 'Software\Wordpress@install']);
-		// Route::post('/update', ['as' => 'manage/account/update', 'uses' => 'UserController@update']);
+	});
+
+	Route::group(['prefix' => 'backups'], function(){
+		Route::get('/', ['as' => 'manage/backups', 'uses' => 'BackupsController@index']);
+		Route::get('/downloads/{timeframe}/{filename}', ['as' => 'manage/backups/download', function( $timeframe, $filename ){
+			return response()->download( storage_path() .'/backups/'. Auth::user()->uid .'/'.$timeframe.'/'.$filename );
+		}]);
 	});
 });
 

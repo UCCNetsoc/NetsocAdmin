@@ -5,7 +5,7 @@
 	
 	<div class="row">
 		{{-- MySQL Card --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align teal">
 					<span class="fa-stack fa-4x">
@@ -24,7 +24,7 @@
 		</a>
 		
 		{{-- Domains --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="#!" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper disabled">
 				<div class="card-image center-align red lighten-1">
 					<span class="fa-stack fa-4x">
@@ -34,6 +34,7 @@
 				</div>
 				<div class="card-content">
 					<div class="card-title center-align valign">Domains</div>
+					<small class="center-align col s12">(Coming Soon)</small>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>
@@ -43,7 +44,7 @@
 		</a>
 		
 		{{-- Account --}}
-		<a href="{{ URL::route('manage/account') }}" class="col l4">
+		<a href="{{ URL::route('manage/account') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align orange lighten-2">
 					<img src="https://robohash.org/{{ Auth::user()->uid }}" />
@@ -61,7 +62,7 @@
 
 	<div class="row">
 		{{-- Wordpress --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/wordpress') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align wordpress">
 					<span class="fa-stack fa-4x">
@@ -80,7 +81,7 @@
 		
 		
 		{{-- Materialize --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align blue lighten-2">
 					<span class="fa-stack fa-4x">
@@ -99,7 +100,7 @@
 		</a>
 		
 		{{-- Account --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align light-green lighten-1">
 					<span class="fa-stack fa-4x">
@@ -120,7 +121,7 @@
 
 	<div class="row">
 		{{-- Wordpress --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align amber">
 					<span class="fa-stack fa-4x">
@@ -140,7 +141,7 @@
 		</a>
 		
 		
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4">
+		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align  lime">
 					<span class="fa-stack fa-4x">
@@ -150,7 +151,7 @@
 					</span>
 				</div>
 				<div class="card-content">
-					<div class="card-title center-align valign">How To SSH</div>
+					<div class="card-title center-align valign">How To IRC</div>
 				</div>
 				{{-- <div class="card-action">
 					<a href="#"><i class="mdi-social-share"></i></a>

@@ -8,7 +8,8 @@
         </li>
         <li id="mysql"><a href="{{ URL::route('manage/mysql') }}" class="waves-effect waves-red">MySQL Databases</a></li>
         <li id="account"><a href="{{ URL::route('manage/account') }}" class="waves-effect waves-red">Account</a></li>
-        <li class="bold"><a href="getting-started.html" class="waves-effect waves-red">Getting Started</a></li>
+        <li id="wordpress"><a href="{{ URL::route('manage/wordpress') }}" class="waves-effect waves-red">Install Wordpress</a></li>
+        <li id="backups"><a href="{{ URL::route('manage/backups') }}" class="waves-effect waves-red">Backups</a></li>
         {{-- <li class="no-padding">
           <ul class="collapsible collapsible-accordion">
             <li class="bold active"><a class="collapsible-header active waves-effect waves-teal">CSS</a>
