@@ -16,6 +16,7 @@ use App\MySQLDatabase;
 use App\Setting;
 
 use App\Http\Controllers\MySQLController;
+use App\Http\Controllers\FileController;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException as ModelNotFoundException;
 
@@ -645,6 +646,7 @@ class Wordpress extends Controller
 					// Link to the admin
 					echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">'. _('Log In') . '</a>';
 					echo '<a href="' . home_url() . '" class="button" target="_blank">' . _('Go to website') . '</a>';
+					echo '<a href="' . URL::route('home') . '" class="button" target="_blank">' . _('Go Back To Netsoc') . '</a>';
 
 					break;
 		}
@@ -662,28 +664,14 @@ class Wordpress extends Controller
 	 * Recursively delete a directory and its contents
 	 */
 	private function rrmdir($path) {
-	    return is_file($path) ? @unlink($path): array_map( array($this, 'rrmdir'), glob($path.'/*'))==@rmdir($path);
+	    return FileController::rrmdir( $path );
 	}
 
 	/**
 	 * Recursively copy all the files from source folder to destination
 	 */
 	private function recursive_copy($src, $dst) { 
-	    $dir = opendir($src); 
-	    @mkdir($dst); 
-	    while(false !== ( $file = readdir($dir)) ) { 
-	        if (( $file != '.' ) && ( $file != '..' )) { 
-	            if ( is_dir($src . '/' . $file) ) { 
-	                $this->recursive_copy($src . '/' . $file,$dst . '/' . $file);
-	            } 
-	            else { 
-	                copy($src . '/' . $file,$dst . '/' . $file);
-	            } 
-	            chgrp($dst . '/' . $file, Setting::where('name', 'REGISTRATION_GROUP')->first()->setting);
-	            chmod($dst . '/' . $file, 0775);
-	        } 
-	    } 
-	    closedir($dir); 
+	    FileController::recursive_copy( $src, $dst );
 	}
 
 	/**
