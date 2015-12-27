@@ -1,9 +1,15 @@
 #!/bin/sh
 BASE=/home/users
-STORAGE_PATH=/var/www/storage/backups
+STORAGE_PATH=$1
 DATE=`date +%Y-%m-%d` #Gets current date in YYYY-MM-DD format and stores it in the variable DATE
 
-if [ "$1" = "weekly" ]; then
+
+if [ -z ${1+x} ]; then
+    echo "Please enter the storage path. EG: ./backup.sh /var/www/storage/backups"
+    exit 1
+fi
+
+if [ "$2" = "weekly" ]; then
 	TIMEFRAME="weekly"
 else
 	TIMEFRAME="monthly"
@@ -13,6 +19,11 @@ for i in $BASE/*/ ; do
     username=$(basename "$i")
     backup_location="$STORAGE_PATH/$username/$TIMEFRAME"
     manifest_file="$backup_location/manifest.txt"
+
+    if [ ! -f "$STORAGE_PATH/$username"]; then
+        mkdir "$STORAGE_PATH/$username"
+        mkdir "$STORAGE_PATH/$username/$TIMEFRAME"
+    fi
 
     if [ ! -f $manifest_file ]; then
         echo "0000-00-00\n0000-00-00\n0000-00-00\n0000-00-00" > $manifest_file
