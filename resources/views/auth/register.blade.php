@@ -43,6 +43,20 @@
 				{!! Form::password('password_confirmation', null, ["class" => "example"] ) !!}
 			</div>
 		</div>
+
+		<div class="row">
+			<div class="input-field">
+				{!! Form::label('course', 'Your Course') !!}
+				{!! Form::text('course', null, ["class" => "example"] ) !!}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field">
+				{!! Form::label('graduation_year', 'Your (Predicted) Graduation Year') !!}
+				{!! Form::text('graduation_year', null, ["class" => "example"] ) !!}
+			</div>
+		</div>
 		<button class="btn waves-effect waves-light" type="submit" name="action">Register
 			<i class="mdi-content-send right"></i>
 		</button>
