@@ -100,7 +100,7 @@
 		</a>
 		
 		{{-- Account --}}
-		<a href="{{ URL::route('manage/mysql') }}" class="col l4 s12">
+		<a href="{{ URL::route('manage/backups') }}" class="col l4 s12">
 			<div class="card hoverable card-horizontal valign-wrapper">
 				<div class="card-image center-align light-green lighten-1">
 					<span class="fa-stack fa-4x">
