@@ -49,6 +49,18 @@ Route::group(['middleware' => 'auth', 'prefix' => 'manage'], function () {
 	});
 });
 
+Route::group(['middleware' => 'auth', 'prefix' => 'static'], function () {
+    Route::get('/ssh', ['as' => 'static/ssh', 'uses' => 'StaticController@howToSSH' ] );
+});
+
+
+
+Route::group(['prefix' => 'download'], function(){
+	Route::get('materialize', ['as' => 'download/materialize', function( ){
+		return Redirect::to("http://materializecss.com/bin/materialize-v0.97.5.zip");
+	}]);
+});
+
 Route::group(['prefix' => 'api'], function( ){
 	Route::post('revealPassword', ['uses' => 'APIController@revealPassword']);
 });
