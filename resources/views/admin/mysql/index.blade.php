@@ -22,7 +22,7 @@
 								<div class="progress hide" id="password-progress">
 								    <div class="indeterminate"></div>
 								</div>
-  								<a class="waves-effect waves-light btn modal-trigger" href="#passwordReveal" >Show Password</a></li>
+  								<a class="waves-effect waves-light btn modal-trigger" href="#passwordReveal" >Show DB Password</a></li>
 						</ul>
 					</span>
 					<span class="center-align col s12">
@@ -68,11 +68,11 @@
 	<!-- Modal Structure -->
 	<div id="passwordReveal" class="modal bottom-sheet">
 		<div class="modal-content">
-			<h4>Please Enter Your Password</h4>
+			<h4>Please Enter Your Netsoc Account Password</h4>
 			<input type="password" id="password-input" placeholder="password"/>
 		</div>
 		<div class="modal-footer">
-			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="revealPassword( '{{ Crypt::encrypt( Auth::user()->uid ) }}', '{{ URL::to("/") }}')">Show Me My Password</a>
+			<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" onclick="revealPassword( '{{ Crypt::encrypt( Auth::user()->uid ) }}', '{{ URL::to("/") }}')">Show Me My Database Password</a>
 		</div>
 	</div>
 
