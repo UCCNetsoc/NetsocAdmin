@@ -19,7 +19,7 @@ class FileController extends Controller{
 	 * Recursively delete a directory and its contents
 	 */
 	public static function rrmdir($path) {
-	    return is_file($path) ? @unlink($path): array_map( array($this, 'rrmdir'), glob($path.'/*'))==@rmdir($path);
+	    return is_file($path) ? @unlink($path): array_map( array(new FileController(), 'rrmdir'), glob($path.'/*'))==@rmdir($path);
 	}
 
 	/**
@@ -31,7 +31,7 @@ class FileController extends Controller{
 	    while(false !== ( $file = readdir($dir)) ) { 
 	        if (( $file != '.' ) && ( $file != '..' )) { 
 	            if ( is_dir($src . '/' . $file) ) { 
-	                $this->recursive_copy($src . '/' . $file,$dst . '/' . $file);
+	                FileController::recursive_copy($src . '/' . $file,$dst . '/' . $file);
 	            } 
 	            else { 
 	                copy($src . '/' . $file,$dst . '/' . $file);
