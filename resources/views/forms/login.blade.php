@@ -29,6 +29,12 @@
 	<button class="btn waves-effect waves-light s12" type="submit" name="action">Login
 		<i class="mdi-content-send right"></i>
 	</button>
+	
+	<a href="{{ URL::route('register') }}">
+		<button class="btn waves-effect waves-light s12 red lighten-2" type="button">Register
+			<i class="fa fa-plus"></i>
+		</button>
+	</a>
 	{!! Form::close() !!}
 
 	<br /> 
