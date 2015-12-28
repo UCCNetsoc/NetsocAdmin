@@ -135,6 +135,10 @@ class Wordpress extends Controller
 					$this->data['wp'] = "error directory";
 				}
 
+				if( substr(sprintf('%o', fileperms($directory)), -4) != '0775' ){
+					$this->data['wp'] = "error directory-permissions";
+				}
+
 				try {
 					MySQLDatabase::where('db_name', $postInfo['dbname'] )->firstOrfail();
 				} catch (ModelNotFoundException $e) {
@@ -187,15 +191,6 @@ class Wordpress extends Controller
 				/*	We create the website folder with the files and the WordPress folder
 				/*--------------------------*/
 
-				// If we want to put WordPress in a subfolder we create it
-				if ( ! substr($directory, -13) == 'public_html/' ) {
-					dd($directory);
-					// Let's create the folder
-					mkdir( $directory );
-
-					// We set the good writing rights
-					chmod( $directory , 0755 );
-				}
 
 				$zip = new \ZipArchive;
 
@@ -646,7 +641,7 @@ class Wordpress extends Controller
 					// Link to the admin
 					echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">'. _('Log In') . '</a>';
 					echo '<a href="' . home_url() . '" class="button" target="_blank">' . _('Go to website') . '</a>';
-					echo '<a href="' . URL::route('home') . '" class="button" target="_blank">' . _('Go Back To Netsoc') . '</a>';
+					echo '<a href="' . \URL::route('home') . '" class="button" target="_blank">' . _('Go Back To Netsoc') . '</a>';
 
 					break;
 		}

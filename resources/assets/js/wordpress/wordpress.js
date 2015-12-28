@@ -263,6 +263,11 @@ jQuery(document).ready(function($) {
 					$('#errors').show().append('<p style="margin-bottom:0px;">&bull; WordPress seems to be Already Installed.</p>');
 				}
 
+				if ( data.wp == "error directory-permissions" ) {
+					errors = true;
+					$('#errors').show().append('<p style="margin-bottom:0px;">&bull; We can\'t write to that directory. Please ensure you have set the directory permissions to 0775. <br />Via SSH: run <code>chmod 775</code> <br /> Via Filezilla: <a target="_BLANK" href="http://www.dummies.com/how-to/content/how-to-change-file-permissions-using-filezilla-on-.html">Please check out this link</a>.</p>');
+				}
+
 				if ( ! errors ) {
 					$('form').fadeOut( 'fast', function() {
 
