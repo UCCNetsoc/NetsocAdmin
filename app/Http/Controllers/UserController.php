@@ -252,6 +252,21 @@ class UserController extends Controller
 	|------------------
 	*/
 
+	public static function getGroupName( $gid ){
+		// Explode and chunk CSV groups and gids
+		$groups = explode(',', env( 'GROUPS_AND_GIDS') );
+		$groups = array_chunk( $groups, 2 );
+
+		foreach ($groups as $group) {
+			if( $gid == $group[0] ){
+				// [0] is the GID of the group
+				return $group[1];
+			}
+		}
+
+		return "Unknown";
+	}
+
 	private function getLDAPDefaults( ){
 		$setting_ids = [
 			'registration_group',
@@ -277,8 +292,10 @@ class UserController extends Controller
 
 	private function changePassword( $new_password ){
 		$password = $this->generateLDAPPassword( $new_password );
-		$settings = $this->getLDAPDefaults( );
-		$dn = 'cn='.Auth::user()->uid.',cn='.$settings['registration_group'].','.env('BASE_DN');
+
+		$group = $this->getGroupName( Auth::user()->gid );
+
+		$dn = 'cn='.Auth::user()->uid.',cn='.$group.','.env('BASE_DN');
 
 		$entry = array();
 		$entry['dn'] = $dn;
