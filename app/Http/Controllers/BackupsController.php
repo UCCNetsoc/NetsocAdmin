@@ -18,6 +18,7 @@ class BackupsController extends Controller{
 	public function index( ){
 
 		if( !file_exists(storage_path() .'/backups/'. Auth::user()->uid .'/weekly') ){
+			mkdir(storage_path() .'/backups/');
 			mkdir(storage_path() .'/backups/'. Auth::user()->uid);
 			mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/weekly');
 			mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/monthly');
