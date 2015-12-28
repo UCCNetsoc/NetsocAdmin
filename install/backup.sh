@@ -25,6 +25,10 @@ for i in $BASE/*/ ; do
         mkdir "$STORAGE_PATH/$username/$TIMEFRAME"
     fi
 
+    if [ ! -d "$STORAGE_PATH/$username/$TIMEFRAME" ]; then
+        mkdir "$STORAGE_PATH/$username/$TIMEFRAME"
+    fi
+
     if [ ! -f $manifest_file ]; then
         echo "0000-00-00\n0000-00-00\n0000-00-00\n0000-00-00" > $manifest_file
     fi
