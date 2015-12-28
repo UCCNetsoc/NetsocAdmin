@@ -18,10 +18,10 @@ class BackupsController extends Controller{
 	public function index( ){
 
 		if( !file_exists(storage_path() .'/backups/'. Auth::user()->uid .'/weekly') ){
-			mkdir(storage_path() .'/backups/');
-			mkdir(storage_path() .'/backups/'. Auth::user()->uid);
-			mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/weekly');
-			mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/monthly');
+			if(!file_exists(storage_path() .'/backups/'){ mkdir(storage_path() .'/backups/') };
+			if(!file_exists(storage_path() .'/backups/'. Auth::user()->uid){ mkdir(storage_path() .'/backups/'. Auth::user()->uid); }
+			if(!file_exists(storage_path() .'/backups/'. Auth::user()->uid .'/weekly'){ mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/weekly'); }
+			if(!file_exists(storage_path() .'/backups/'.Auth::user()->uid .'/monthly'){ mkdir(storage_path() .'/backups/'. Auth::user()->uid .'/monthly'); }
 		}
 
 		$weekly_files = array_diff(
