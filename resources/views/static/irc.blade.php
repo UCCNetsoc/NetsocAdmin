@@ -53,7 +53,7 @@
 	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>D</strong></code> Detaches from Screen.</li>
 	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>C</strong></code> Creates a new Screen window.</li>
 	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>N</strong></code> switches focus to the Next window in the Screen.</li>
-	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>P</strong></code> switches focus to the Pext window in the Screen.</li>
+	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>P</strong></code> switches focus to the Previous window in the Screen.</li>
 	<li class="collection-item"><code>Ctrl</code> + <code>A</code> and then <code><strong>K</strong></code> Kills the current window in the Screen.</li>
 </ul>
 
