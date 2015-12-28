@@ -38,4 +38,6 @@ for i in $BASE/*/ ; do
     rm -f $backup_location/$OLD
     sed -i '1 d' $manifest_file
 	sed -i "$ a\\$DATE" $manifest_file
+
+    chown -R www-data:www-data $STORAGE_PATH
 done
