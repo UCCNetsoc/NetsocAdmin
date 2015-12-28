@@ -20,7 +20,7 @@ for i in $BASE/*/ ; do
     backup_location="$STORAGE_PATH/$username/$TIMEFRAME"
     manifest_file="$backup_location/manifest.txt"
 
-    if [ ! -f "$STORAGE_PATH/$username"]; then
+    if [ ! -d $STORAGE_PATH/$username ]; then
         mkdir "$STORAGE_PATH/$username"
         mkdir "$STORAGE_PATH/$username/$TIMEFRAME"
     fi
