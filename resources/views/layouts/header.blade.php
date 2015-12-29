@@ -18,7 +18,7 @@
 	
 
 	<link rel="canonical" href="https://admin.netsoc.co" />
-	<meta property="og:title" content="UCC Netsoc Projects" />
+	<meta property="og:title" content="UCC Netsoc Admin" />
 	<meta property="og:url" content="https://admin.netsoc.co" />
 	<meta property="og:image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
 	<meta property="og:image:width" content="1200" />
