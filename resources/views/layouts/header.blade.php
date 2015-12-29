@@ -15,7 +15,43 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
 	<link rel="stylesheet" type="text/css" href="{{ URL::to('/') }}/css/app.css">
 	@yield('extra-css')
+	
 
+	<link rel="canonical" href="https://admin.netsoc.co" />
+	<meta property="og:title" content="UCC Netsoc Projects" />
+	<meta property="og:url" content="https://admin.netsoc.co" />
+	<meta property="og:image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:site_name" content="UCC Netsoc Admin" />
+	<meta property="fb:admins" content="1385961037" />
+	<meta property="og:description" content="Manage your webspace and databases in one location." />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@UCCNetsoc" />
+	<meta name="twitter:title" content="UCC Netsoc Admin" />
+	<meta name="twitter:description" content="Manage your webspace and databases in one location." />
+	<meta name="twitter:image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta itemprop="image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<script type="application/ld+json">
+	{
+		"@context" : "http://schema.org",
+		"@type" : "Organization",
+		"name" : "UCC Netsoc",
+		"url" : "https://admin.netsoc.co",
+		"sameAs" : ["http://www.facebook.com/UCCNetsoc","http://www.twitter.com/UCCNetsoc","http://plus.google.com/+Netsoc"] 
+	}
+	</script>
+
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-71411325-3', 'auto');
+	  ga('send', 'pageview');
+
+	</script>
 
 	@yield('extra-head')
 </head>
