@@ -639,8 +639,8 @@ class Wordpress extends Controller
 					}
 
 					// Link to the admin
-					echo '<a href="' . admin_url() . '" class="button" style="margin-right:5px;" target="_blank">'. _('Log In') . '</a>';
-					echo '<a href="' . home_url() . '" class="button" target="_blank">' . _('Go to website') . '</a>';
+					echo '<a href="' . str_replace('https', 'http', admin_url()) . '" class="button" style="margin-right:5px;" target="_blank">'. _('Log In') . '</a>';
+					echo '<a href="' . str_replace('https', 'http', home_url() ) . '" class="button" target="_blank">' . _('Go to website') . '</a>';
 					echo '<a href="' . \URL::route('home') . '" class="button" target="_blank">' . _('Go Back To Netsoc') . '</a>';
 
 					break;
