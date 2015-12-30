@@ -52,7 +52,7 @@ class UserController extends Controller
 			// If user is logged in, send 'em home
 			return Redirect::route( 'home' );
 		}
-		
+
 		return View::make( 'auth.register' );
 	}
 
@@ -271,7 +271,7 @@ class UserController extends Controller
 			}
 		}
 
-		return "Unknown";
+		return "member";
 	}
 
 	private function getLDAPDefaults( ){
