@@ -166,7 +166,7 @@
 							<label for="permalink_structure">{{ _('Custom Structure') }}</label>
 						</th>
 						<td>
-							<code>http://{{ $_SERVER['SERVER_NAME'] }}</code>
+							<code>{{ 'http://' . Auth::user()->uid . '.' . env('USER_DOMAIN') }}</code>
 							<input name="permalink_structure" type="text" id="permalink_structure" size="50" value="/%postname%/" />
 						</td>
 					</tr>
