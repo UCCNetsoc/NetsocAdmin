@@ -127,7 +127,7 @@ class UserController extends Controller
 		$entry['uid'] = $data['uid'];
 
 		// Get UID number, use it then increment it
-		$current_uid_number = Setting::where('name', 'current_uid_number');
+		$current_uid_number = Setting::where('name', 'current_uid_number')->first();
 		$entry['uidNumber'] = $current_uid_number->setting;
 		$current_uid_number->setting++;
 		$current_uid_number->save();
