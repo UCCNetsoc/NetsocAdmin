@@ -29,6 +29,6 @@
 	</pre></code>
 	
 	<h3>What now?</h3>
-	<p class="flow-text">You now have a shell to access and control different services on our server, Leela. You can create and edit files, run or edit code etc.</p>
-	<p class="flow-text">Once you log in successfully for the first time, all the necessary requirements to set up web space are completed automatically. You can then log back out simply by typing <code>exit</code> and pressing enter.</code></p>
+	<p class="flow-text">You now have a shell to access and control different services on our server, Leela. You can create and edit files, run or edit code etc. To learn more about using the shell, try out the tutorials <a href="http://www.ee.surrey.ac.uk/Teaching/Unix/">here</a>!</p>
+	<p class="flow-text">Once you log in successfully for the first time, all the necessary requirements to set up web space are completed automatically. You can then log back out simply by typing <code>exit</code> and pressing enter.</p>
 @endsection
