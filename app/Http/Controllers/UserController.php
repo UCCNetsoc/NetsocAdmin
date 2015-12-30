@@ -48,6 +48,11 @@ class UserController extends Controller
 	 * @return VIEW register
 	 */
 	public function register( ){
+		if( Auth::check( ) ){
+			// If user is logged in, send 'em home
+			return Redirect::route( 'home' );
+		}
+		
 		return View::make( 'auth.register' );
 	}
 
