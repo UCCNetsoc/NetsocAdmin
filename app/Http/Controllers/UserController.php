@@ -157,7 +157,7 @@ class UserController extends Controller
 
 		if( $newUser ){
 			// If successful, go to home
-			return Redirect::route( 'home' );
+			return Redirect::route( 'static/ssh' );
 		}
 		
 		// If unsuccessful, return with errors
