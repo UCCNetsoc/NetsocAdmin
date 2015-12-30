@@ -64,7 +64,7 @@
 					</tr>
 					<tr>
 						<td>
-							<input name="url" type="hidden" value="{{ 'http://' . env('USER_DOMAIN').'/~'.Auth::user()->uid }}" />
+							<input name="url" type="hidden" value="{{ 'http://' . Auth::user()->uid . '.' . env('USER_DOMAIN') }}" />
 						</td>
 					</tr>
 					<tr>
@@ -74,7 +74,7 @@
 						</th>
 						<td>
 							<input name="directory" type="text" id="directory" size="25" value="" />
-							<p> {{ _('This is relative to your user public_html directory. (i.e. "wordpress" for user "evan" would install at "'. \App\Setting::where('name', 'DEFAULT_HOME_DIRECTORY')->first()->setting .'evan/public_html"). ' ) }} <strong> <u> {{ _('Please ensure the directory has 0775 permissions.') }}</u></strong></p>
+							<p> {{ _('This is relative to your user public_html directory. (i.e. "wordpress" for user "evan" would install at "'. \App\Setting::where('name', 'DEFAULT_HOME_DIRECTORY')->first()->setting .'evan/public_html/wordpress"). ' ) }} <strong> <u> {{ _('Please ensure the directory has 0775 permissions.') }}</u></strong></p>
 						</td>
 					</tr>
 					<tr>
