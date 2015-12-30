@@ -18,6 +18,13 @@
 			"method" => "POST",
 			'class' => 'row col s12'
 		]) !!}
+
+		<div class="row">
+			<div class="input-field">
+				{!! Form::label('name', 'Full Name') !!}
+				{!! Form::text('name', null, ["class" => "example"] ) !!}
+			</div>
+		</div>
 		<div class="row">
 			<div class="input-field">
 				{!! Form::label('student_id', 'Student Number') !!}

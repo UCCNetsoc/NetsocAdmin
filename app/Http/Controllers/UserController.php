@@ -94,7 +94,8 @@ class UserController extends Controller
 					'password_confirmation',
 					'student_id',
 					'graduation_year',
-					'course'
+					'course',
+					'name'
 				]);
 
 		// Validate all input
@@ -102,8 +103,9 @@ class UserController extends Controller
 					'uid'  				=> 'required|unique:users|min:5|alpha_num',
 					'student_id'        => 'numeric|required|unique:users',
 					'password'          => 'required|confirmed|min:5',
-					'graduation_year'   => 'required',
-					'course'            => 'required'
+					'graduation_year'   => 'required|numeric|digits:4',
+					'course'            => 'required',
+					'name'				=> 'required'
 				]);
 		
 
