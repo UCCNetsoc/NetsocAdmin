@@ -308,7 +308,7 @@ class UserController extends Controller
 		$entry['dn'] = $dn;
 		$entry['userPassword'] = $password;
 
-		// Create new user in LDAP
+		// Modify user's password
 		$adLDAP = new adLDAP( );
 		$ldapUsers = new adLDAPUsers( $adLDAP );
 		$ldapUsers->modify( Auth::user()->uid, $entry );
