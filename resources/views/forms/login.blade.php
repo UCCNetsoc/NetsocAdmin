@@ -15,7 +15,7 @@
 	<div class="row">
 		<div class="input-field">
 			{!! Form::label('uid', 'Username (lowercase-only)') !!}
-			{!! Form::text('uid', null, ["class" => "example"] ) !!}
+			{!! Form::text('uid', null, ["class" => "example", "autofocus"] ) !!}
 		</div>
 	</div>
 	

@@ -22,7 +22,7 @@
 		<div class="row">
 			<div class="input-field">
 				{!! Form::label('name', 'Full Name') !!}
-				{!! Form::text('name', null, ["class" => "example"] ) !!}
+				{!! Form::text('name', null, ["class" => "example", "autofocus"] ) !!}
 			</div>
 		</div>
 		<div class="row">
