@@ -16,6 +16,7 @@
         <li id="irc"><a href="{{ URL::route('static/irc') }}" class="waves-effect waves-red">How To IRC</a></li>
 
         <li id="logout"><a href="{{ URL::route('logout') }}" class="waves-effect waves-red">Logout</a></li>
+        <li><a href="{{ env('ISSUE_TRACKER') }}">Report a bug</a></li>
     </ul>
 
 </aside>
