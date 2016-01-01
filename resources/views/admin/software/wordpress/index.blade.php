@@ -269,7 +269,7 @@
 				<p class="step"><span id="submit" class="button button-large">{{ _('Install WordPress') }}</span></p>
 				{{ csrf_field() }}
 				<input type="hidden" name="random_int" value="{{ \Crypt::encrypt( $random_int = mt_rand(0,9999)) }}"/>
-				<input type="hidden" name="dbname" value='{{ \Crypt::encrypt( substr(Auth::user()->uid, 0, 8) . "_db_" . $random_int ) }}' />
+				<input type="hidden" name="dbname" value='{{ \Crypt::encrypt( Auth::user()->uid . "_db_" . $random_int ) }}' />
 				<input type="hidden" name="uname" value='{{ \Crypt::encrypt( substr(Auth::user()->uid, 0, 8) . "_wp_" . $random_int ) }}' />
 				<input type="hidden" name="pwd" value='{{ \Crypt::encrypt( App\Http\Controllers\MySQLController::randomPassword( ) ) }}' />
 				<input type="hidden" name="dbhost" value='{{ \Crypt::encrypt( env("MYSQL_HOST") ) }}' />
