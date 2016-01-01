@@ -31,9 +31,9 @@ class CreateMysqlDbTable extends Migration
      */
     public function down()
     {
-        Schema::drop('mysql_databases');
         Schema::table('mysql_users', function (Blueprint $table) {
             $table->dropForeign('mysql_databases_user_id_foreign');
         });
+        Schema::drop('mysql_databases');
     }
 }
