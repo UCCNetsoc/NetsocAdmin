@@ -325,6 +325,8 @@ class Wordpress extends Controller
 								$line = "define('WPLANG', '" . $this->sanit( $postInfo['language'] ) . "');\r\n";
 								break;
 						}
+
+						$line = "define('FS_METHOD', 'direct');\r\n";
 					}
 					unset( $line );
 
