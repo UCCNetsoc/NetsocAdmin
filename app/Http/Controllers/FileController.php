@@ -36,8 +36,8 @@ class FileController extends Controller{
 	            else { 
 	                copy($src . '/' . $file,$dst . '/' . $file);
 	            }
-	            chmod($dst . '/' . $file, 0775);
-	            chgrp($dst . '/' . $file, Setting::where('name', 'REGISTRATION_GROUP')->first()->setting);
+	            @chmod($dst . '/' . $file, 0775);
+	            @chgrp($dst . '/' . $file, Setting::where('name', 'REGISTRATION_GROUP')->first()->setting);
 	        } 
 	    } 
 	    closedir($dir); 

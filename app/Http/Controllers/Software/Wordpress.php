@@ -147,14 +147,6 @@ class Wordpress extends Controller
 					MySQLController::createSoleUser( $postInfo['uname'], $postInfo['pwd'], $postInfo['dbname'] );
 				}
 				
-				
-				// DB Test
-				try {
-				   $db = new \PDO('mysql:host='. $postInfo['dbhost'] .';dbname=' . $postInfo['dbname'] , $postInfo['uname'], $postInfo['pwd'] );
-				}
-				catch (Exception $e) {
-					$this->data['db'] = "error etablishing connection";
-				}
 
 				// We send the response
 				echo json_encode( $this->data );
@@ -325,8 +317,6 @@ class Wordpress extends Controller
 								$line = "define('WPLANG', '" . $this->sanit( $postInfo['language'] ) . "');\r\n";
 								break;
 						}
-
-						$line = "define('FS_METHOD', 'direct');\r\n";
 					}
 					unset( $line );
 
@@ -334,6 +324,7 @@ class Wordpress extends Controller
 					foreach ( $config_file as $line ) {
 						fwrite( $handle, $line );
 					}
+					fwrite($handle, "define('FS_METHOD', 'direct');\r\n");
 					fclose( $handle );
 
 					chmod( $directory . 'wp-config.php', 0775 );
