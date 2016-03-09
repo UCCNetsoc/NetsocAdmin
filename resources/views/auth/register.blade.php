@@ -21,6 +21,12 @@
 
 		<div class="row">
 			<div class="input-field">
+				{!! Form::text('email', (isset($email) ? $email : null ), ['disabled'] ) !!}
+				{!! Form::hidden('email', (isset($email) ? $email : null ) ) !!}
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-field">
 				{!! Form::label('name', 'Full Name') !!}
 				{!! Form::text('name', null, ["class" => "example", "autofocus"] ) !!}
 			</div>
@@ -67,6 +73,8 @@
 		<button class="btn waves-effect waves-light" type="submit" name="action">Register
 			<i class="mdi-content-send right"></i>
 		</button>
+
+		{!! Form::hidden('token', (isset($token) ? $token : null )) !!}
 		{!! Form::close() !!}
 
 		<br /> 

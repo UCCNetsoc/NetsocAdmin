@@ -4,13 +4,18 @@ use View;
 use Auth;
 use Response;
 use Redirect;
-use Request;
 use Validator;
 use Hash;
+use Mail;
+use DB;
+use Request;
 use App\User;
 use App\Setting;
+use App\VerificationCode;
 use adLDAP\classes\adLDAPUsers;
 use adLDAP\adLDAP;
+
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends Controller
 {
@@ -47,13 +52,24 @@ class UserController extends Controller
 	 * Render registration view
 	 * @return VIEW register
 	 */
-	public function register( ){
+	public function register( $token, $email ){
 		if( Auth::check( ) ){
 			// If user is logged in, send 'em home
 			return Redirect::route( 'home' );
 		}
 
-		return View::make( 'auth.register' );
+		try {
+			VerificationCode::where('email', $email)
+							->where('confirmation_code', $token)
+							->firstOrFail();
+
+			$data['token'] = $token;
+			$data['email'] = $email;
+
+			return View::make( 'auth.register' )->with($data);
+		} catch (ModelNotFoundException $e) {
+			return Redirect::route('register');
+		}
 	}
 
 	/**
@@ -80,12 +96,51 @@ class UserController extends Controller
 		return View::make( 'admin.account.index' )->with('info', $userInfo);
 	}
 
+	public function preRegistration( ){
+		if( Auth::check( ) ){
+			// If user is logged in, send 'em home
+			return Redirect::route( 'home' );
+		}
+		return View::make( 'auth.confirm_email' );
+	}
+
 	/*
 	|------------------
 	| FORM CONTROLS
 	|------------------
 	*/
-   
+
+	public function sendConfirmation( ){
+		$data = Request::only(['email']);
+		$email = $data['email'];
+		$token = str_random(30);
+		$domain = substr(strrchr($email, "@"), 1);
+
+		if( in_array( $domain, explode( ',', env('ACCEPTABLE_EMAIL_DOMAINS') ) ) ){
+			try {
+				// Check if student exists already
+				User::where('email', $email)->firstOrFail();
+
+			} catch (ModelNotFoundException $e) {
+				// Send email verification if they are
+				Mail::send('emails.verification_code', ['email' => $email, 'confirmation_code' => $token], function ($m) use($email) {
+		            $m->from('admin@'.env('USER_DOMAIN'), env('SITE_TITLE') );
+
+		            $m->to($email)->subject('Verify Your Email For '.env('SITE_TITLE'));
+		        });
+
+		        VerificationCode::create([
+		        	'email' => $email,
+		        	'confirmation_code' => $token
+		        ]);
+
+		        return View::make('emails.thank_you');
+			}
+		} else{
+			return Redirect::back()->withErrors(['That email is not on our approved list of student emails']);
+		}
+	}
+
 	/**
 	 * Creates a new user
 	 * 	Data should be POSTed to this function only
@@ -100,7 +155,9 @@ class UserController extends Controller
 					'student_id',
 					'graduation_year',
 					'course',
-					'name'
+					'name',
+					'token',
+					'email'
 				]);
 
 		// Validate all input
@@ -110,14 +167,30 @@ class UserController extends Controller
 					'password'          => 'required|confirmed|min:5',
 					'graduation_year'   => 'required|numeric|digits:4',
 					'course'            => 'required',
-					'name'				=> 'required'
+					'name'				=> 'required',
+					'email'				=> 'required|unique:users'
 				]);
+
+
+		$importantValues = [
+			'token' => $data['token'],
+			'email' => $data['email']
+		];
+
+		try {
+			VerificationCode::where('email', $data['email'])
+							->where('confirmation_code', $data['token'])
+							->firstOrFail();
+		} catch (ModelNotFoundException $e) {
+			return Redirect::back()->withInput()->withErrors(['The verification code supplied is not valid']);
+		}
 		
 
 		if( $validator->fails( ) ){
 			// If validation fails, redirect back to 
 			// registration form with errors
 			return Redirect::back( )
+					->withInput()
 					->withErrors( $validator )
 					->withInput( );
 		}
@@ -129,6 +202,7 @@ class UserController extends Controller
 		$entry['objectClass'][] = 'account';
 		$entry['objectClass'][] = 'top';
 		$entry['objectClass'][] = 'posixAccount';
+		$entry['objectClass'][] = 'mailAccount';
 		$entry['dn'] = 'cn='.$data['uid'].',cn='.$settings['registration_group'].','.env('BASE_DN');
 		$entry['gidNumber'] = $settings['registration_group_id'];
 		$entry['uid'] = $data['uid'];
@@ -145,6 +219,9 @@ class UserController extends Controller
 		$entry['homeDirectory'] = $settings['default_home_directory'].$data['uid'];
 		$entry['loginShell'] = $settings['default_shell'];
 		$entry['cn'] = $data['uid'];
+
+		// Email of form {username}@{Top Level Domain}
+		$entry['mail'] = $data['uid'] . '@' . env('USER_DOMAIN');
 
 		// Create new user in LDAP
 		$adLDAP = new adLDAP( );
@@ -167,6 +244,7 @@ class UserController extends Controller
 		
 		// If unsuccessful, return with errors
 		return Redirect::back( )
+					->withInput()
 					->withErrors( [
 						'message' => 'We\'re sorry but registration failed, please email '. env('DEV_EMAIL') 
 					] )

@@ -18,7 +18,9 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-Route::get('/register', ['as' => 'register', 'uses' => 'UserController@register']);
+Route::get('/register', ['as' => 'register', 'uses' => 'UserController@preRegistration']);
+Route::get('/register/{token}/{email}', ['as' => 'after-validation', 'uses' => 'UserController@register']);
+Route::post('/user/sendconfirmation', ['as' => 'user/sendconfirmation', 'uses' => 'UserController@sendConfirmation']);
 Route::post('/user/store', ['as' => 'user/store', 'uses' => 'UserController@store']);
 
 Route::get('/login', ['as' => 'login', 'uses' => 'UserController@login']);
