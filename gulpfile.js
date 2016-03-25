@@ -16,15 +16,3 @@ elixir(function(mix) {
     mix.scriptsIn("resources/assets/js/app", "public/js/app.js");
     mix.scriptsIn("resources/assets/js/wordpress", "public/js/wordpress.js");
 });
-
-require('laravel-elixir-browser-sync');
- 
-elixir(function(mix) {
-	mix.browserSync([
-	    'public/**/*',
-	    'resources/**/*'
-		], {
-		proxy: 'netsocadmin.dev',
-		reloadDelay: 500
-	});
-});
