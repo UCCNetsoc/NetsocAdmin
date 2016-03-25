@@ -138,6 +138,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Illuminate\Html\HtmlServiceProvider::class,
         Ccovey\LdapAuth\LdapAuthServiceProvider::class,
+        Yaro\LogEnvelope\ServiceProvider::class,
 
         /*
          * Application Service Providers...

@@ -26,7 +26,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        return parent::report($e);
+        $res = parent::report($e);
+
+        \LogEnvelope::send($e);
+
+        return $res; 
     }
 
     /**

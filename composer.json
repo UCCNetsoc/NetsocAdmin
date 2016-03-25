@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "illuminate/html": "~5.0",
         "illuminate/support": "~5.0",
-        "strebl/l5-ldap-auth": "2.1.3"
+        "strebl/l5-ldap-auth": "2.1.3",
+        "yaro/log-envelope": "^1.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
