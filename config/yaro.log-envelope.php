@@ -50,7 +50,7 @@ return [
      * List of exceptions to skip sending.
      */
     'except' => [
-        //'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
+        'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
     ],
 
 ];
