@@ -85,6 +85,15 @@ Vagrant.configure(2) do |config|
     sudo php artisan migrate
     sudo php artisan db:seed
 
+    # ~~~~~~ The following is optional and can be run ~~~~~~ 
+    # ~~~~~~ locally instead of through the VM        ~~~~~~ 
+
+    ## Install our NPM dependencies locally
+    # npm install gulp laravel-elixir
+
+    ## Process the styling for the website
+    # gulp
+
     # Install Docker (For LDAP)
     sudo apt-get -y install apt-transport-https ca-certificates
     sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
