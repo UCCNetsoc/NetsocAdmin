@@ -1,0 +1,19 @@
+dn: cn=member,dc=netsoc,dc=co
+objectClass: top
+objectClass: posixGroup
+cn: member
+
+dn: cn=committee,dc=netsoc,dc=co
+objectClass: top
+objectClass: posixGroup
+cn: committee
+
+dn: cn=admins,dc=netsoc,dc=co
+objectClass: top
+objectClass: posixGroup
+cn: admins
+
+dn: cn=sftp,dc=netsoc,dc=co
+objectClass: top
+objectClass: posixGroup
+cn: sftp

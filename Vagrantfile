@@ -53,5 +53,22 @@ Vagrant.configure(2) do |config|
     sudo composer update
     sudo php artisan migrate
     sudo php artisan db:seed
+
+    # Install Docker (For LDAP)
+    sudo apt-get -y install apt-transport-https ca-certificates
+    sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    sudo echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+    sudo apt-get update
+    sudo apt-cache policy docker-engine
+    sudo apt-get -y install linux-image-extra-$(uname -r)
+    sudo apt-get -y install docker-engine
+    sudo service docker start
+
+    # Setup LDAP
+    sudo apt-get -y install ldap-utils
+    sudo docker run -p 389:389 --env LDAP_ORGANISATION="UCC Netsoc" --env LDAP_DOMAIN="netsoc.co" \
+      --env LDAP_ADMIN_PASSWORD="root" --detach osixia/openldap:1.1.3
+    ldapadd -h localhost -p 389 -D "cn=admin,dc=netsoc,dc=co" -w root -f /var/www/development/ldap/schema.ldif
+
   SHELL
 end
