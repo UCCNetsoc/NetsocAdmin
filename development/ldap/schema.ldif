@@ -2,18 +2,22 @@ dn: cn=member,dc=netsoc,dc=co
 objectClass: top
 objectClass: posixGroup
 cn: member
+gidNumber: 422
 
 dn: cn=committee,dc=netsoc,dc=co
 objectClass: top
 objectClass: posixGroup
 cn: committee
+gidNumber: 421
 
 dn: cn=admins,dc=netsoc,dc=co
 objectClass: top
 objectClass: posixGroup
 cn: admins
+gidNumber: 420
 
 dn: cn=sftp,dc=netsoc,dc=co
 objectClass: top
 objectClass: posixGroup
 cn: sftp
+gidNumber: 423
