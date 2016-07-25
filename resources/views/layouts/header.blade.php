@@ -20,7 +20,7 @@
 	<link rel="canonical" href="https://admin.netsoc.co" />
 	<meta property="og:title" content="UCC Netsoc Admin" />
 	<meta property="og:url" content="https://admin.netsoc.co" />
-	<meta property="og:image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta property="og:image" content="https://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:site_name" content="UCC Netsoc Admin" />
@@ -30,8 +30,8 @@
 	<meta name="twitter:site" content="@UCCNetsoc" />
 	<meta name="twitter:title" content="UCC Netsoc Admin" />
 	<meta name="twitter:description" content="Manage your webspace and databases in one location." />
-	<meta name="twitter:image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
-	<meta itemprop="image" content="http://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta name="twitter:image" content="https://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta itemprop="image" content="https://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
 	<script type="application/ld+json">
 	{
 		"@context" : "http://schema.org",
