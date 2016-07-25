@@ -119,8 +119,8 @@ class MySQLController extends Controller
 		// beginning with {username}_
 		DB::statement("CREATE USER '{$username}'@'%' IDENTIFIED BY '{$password}'");
 		DB::statement("CREATE USER '{$username}'@'localhost' IDENTIFIED BY '{$password}'");
-        DB::statement("GRANT ALL PRIVILEGES ON `{$username}\_%`.* TO '{$username}'@'%' IDENTIFIED BY '{$password}';");
-        DB::statement("GRANT ALL PRIVILEGES ON `{$username}\_%`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$password}';");
+        DB::statement("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, EXECUTE, CREATE ROUTINE, ALTER ROUTINE ON `{$username}\_%`.* TO '{$username}'@'%' IDENTIFIED BY '{$password}';");
+        DB::statement("GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, EXECUTE, CREATE ROUTINE, ALTER ROUTINE ON `{$username}\_%`.* TO '{$username}'@'localhost' IDENTIFIED BY '{$password}';");
 
         MySQLUser::create(['user_id' => Auth::user()->id, 'username' => Auth::user()->uid, 'password' => $password]);
 
