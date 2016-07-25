@@ -8,7 +8,7 @@ ip_address = "172.22.22.25"
 Vagrant.configure(2) do |config|
   
   config.vm.box = "Netsoc"
-  config.vm.box_url = "http://files.netsoc.co/f/2e06d99781/?dl=1"
+  config.vm.box_url = "https://files.netsoc.co/f/2e06d99781/?dl=1"
   config.vm.box_check_update = true
 
   # Configuration for our virtualisation provider
