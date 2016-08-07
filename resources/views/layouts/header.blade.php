@@ -32,6 +32,8 @@
 	<meta name="twitter:description" content="Manage your webspace and databases in one location." />
 	<meta name="twitter:image" content="https://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
 	<meta itemprop="image" content="https://files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta name="twitter:image" content="//files.netsoc.co/f/e9e0bee5b4/?dl=1" />
+	<meta itemprop="image" content="//files.netsoc.co/f/e9e0bee5b4/?dl=1" />
 	<script type="application/ld+json">
 	{
 		"@context" : "http://schema.org",
